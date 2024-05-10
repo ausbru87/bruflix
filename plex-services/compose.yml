@@ -1,0 +1,41 @@
+---
+version: '3'
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    environment:
+      - PUID=${BRUFLIX_ID}
+      - PGID=${BRUFLIX_ID}
+      - TZ=${TZ}
+      - VERSION=docker
+      # - PLEX_CLAIM= #optional
+    volumes:
+      - ${APP_DIR}/plex/config:/config
+      - ${MEDIA_DIR}/tv:/tv
+      - ${MEDIA_DIR}/movies:/movies
+      - ${MEDIA_DIR}/dvr:/dvr
+    ports:
+      - 32400:32400
+      - 3005:3005
+      - 8324:8324
+      - 32469:32469
+      - 1900:1900
+      - 32410:32410
+      - 32412:32412
+      - 32413:32413
+      - 32414:32414
+    restart: unless-stopped
+
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=${BRUFLIX_ID}
+      - PGID=${BRUFLIX_ID}
+      - TZ=America/Denver
+    volumes:
+      - ${APP_DIR}/tautulli:/config
+    ports:
+      - 8181:8181
+    restart: unless-stopped
